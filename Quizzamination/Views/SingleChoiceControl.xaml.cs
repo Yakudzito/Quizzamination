@@ -41,5 +41,12 @@ namespace Quizzamination.Views
                 OptionsList.Children.Add(radio);
             }
         }
+        public int? GetSelectedIndex()
+        {
+            foreach (var child in OptionsList.Children)
+                if (child is RadioButton rb && rb.IsChecked == true)
+                    return (int?)rb.Tag;
+            return null;
+        }
     }
 }

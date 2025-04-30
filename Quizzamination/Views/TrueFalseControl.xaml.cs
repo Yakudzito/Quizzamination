@@ -39,5 +39,12 @@ namespace Quizzamination.Views
             OptionsPanel.Children.Add(trueRadio);
             OptionsPanel.Children.Add(falseRadio);
         }
+        public int? GetSelectedIndex()
+        {
+            foreach (var child in OptionsPanel.Children)
+                if (child is RadioButton rb && rb.IsChecked == true)
+                    return (int?)rb.Tag;
+            return null;
+        }
     }
 }

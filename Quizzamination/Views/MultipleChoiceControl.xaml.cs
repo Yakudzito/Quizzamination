@@ -39,5 +39,13 @@ namespace Quizzamination.Views
                 OptionsList.Children.Add(checkbox);
             }
         }
+        public List<int> GetSelectedIndexes()
+        {
+            var selected = new List<int>();
+            foreach (var child in OptionsList.Children)
+                if (child is CheckBox cb && cb.IsChecked == true)
+                    selected.Add((int)cb.Tag);
+            return selected;
+        }
     }
 }

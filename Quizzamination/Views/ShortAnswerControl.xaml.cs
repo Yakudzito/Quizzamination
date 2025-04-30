@@ -28,5 +28,7 @@ namespace Quizzamination.Views
             Question = question;
             this.DataContext = question;
         }
+
+        public string GetAnswerText() => AnswerBox.Text.Trim();
     }
 }
