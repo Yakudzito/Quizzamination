@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <ContentControl x:Name="QuestionHost" Margin="10"/>
+        <Button Content="Далі"
+                Click="NextButton_Click"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="10"/>
     </Grid>
 </Window>
