@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Quizzamination.Models;
 
@@ -14,7 +15,12 @@ namespace Quizzamination.Services
         public static List<Question> LoadFromFile(string path)
         {
             var json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<List<Question>>(json)!;
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+            };
+            return JsonSerializer.Deserialize<List<Question>>(json, options)!;
         }
     }
 }
