@@ -36,6 +36,9 @@ namespace Quizzamination
             {
                 QuestionType.SingleChoice => new SingleChoiceControl(question),
                 QuestionType.TrueFalse => new TrueFalseControl(question),
+                QuestionType.MultipleChoice => new MultipleChoiceControl(question),
+                QuestionType.Matching => new MatchingControl(question),
+                QuestionType.ShortAnswer => new ShortAnswerControl(question),
                 _ => new UserControl { Content = new TextBlock { Text = "Цей тип питання ще не реалізований" } }
             };
 
