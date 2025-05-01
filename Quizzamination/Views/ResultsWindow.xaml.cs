@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Text.Json;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Quizzamination.Models;
-
+using Microsoft.Win32;
 namespace Quizzamination.Views
 {
     /// <summary>
@@ -10,9 +12,11 @@ namespace Quizzamination.Views
     /// </summary>
     public partial class ResultsWindow : Window
     {
+        private readonly List<AnswerResult> _results;
         public ResultsWindow(List<AnswerResult> results)
         {
             InitializeComponent();
+            _results = results;
             LoadResults(results);
         }
 
@@ -53,12 +57,91 @@ namespace Quizzamination.Views
                 panel.Children.Add(block);
             }
 
+            var saveButton = new Button
+            {
+                Content = "Зберегти результати",
+                Margin = new Thickness(0, 10, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+            saveButton.Click += SaveButton_Click;
+
+            panel.Children.Add(saveButton);
+
             Content = new ScrollViewer { Content = panel };
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveResultsToFile(_results);
+        }
+
+        private void SaveResultsToFile(List<AnswerResult> results)
+        {
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Text files (*.txt)|*.txt",
+                Title = "Зберегти результати у файл",
+                FileName = $"results_{DateTime.Now:yyyyMMdd_HHmmss}.txt"
+            };
+
+            string txtPath;
+            string jsonPath;
+
+            if (dialog.ShowDialog() == true)
+            {
+                txtPath = dialog.FileName;
+                jsonPath = Path.ChangeExtension(txtPath, ".json");
+            }
+            else
+            {
+                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                string defaultDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Quizzamination");
+                Directory.CreateDirectory(defaultDir);
+                txtPath = Path.Combine(defaultDir, $"results_{timestamp}.txt");
+                jsonPath = Path.Combine(defaultDir, $"results_{timestamp}.json");
+            }
+
+            SaveTxt(results, txtPath);
+            SaveJson(results, jsonPath);
+
+            MessageBox.Show($"Результати збережено:\n{txtPath}\n{jsonPath}", "Успішно", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void SaveTxt(List<AnswerResult> results, string path)
+        {
+            var lines = new List<string>();
+
+            foreach (var result in results)
+            {
+                lines.Add($"Питання: {result.Question.Text}");
+                lines.Add($"Ваша відповідь: {FormatAnswer(result.UserAnswer, result.Question.Type, result.Question)}");
+                lines.Add($"Статус: {(result.IsCorrect ? "✅ Правильно" : "❌ Неправильно")}");
+                if (!result.IsCorrect)
+                {
+                    lines.Add($"Правильна відповідь: {FormatCorrectAnswer(result.Question)}");
+                }
+                lines.Add(""); // порожній рядок
+            }
+
+            File.WriteAllLines(path, lines);
+        }
+
+        private void SaveJson(List<AnswerResult> results, string path)
+        {
+            var simplified = results.Select(r => new
+            {
+                Question = r.Question.Text,
+                Answer = FormatAnswer(r.UserAnswer, r.Question.Type, r.Question),
+                Correct = r.IsCorrect
+            });
+
+            var json = JsonSerializer.Serialize(simplified, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(path, json);
         }
 
         private string FormatAnswer(object? answer, QuestionType type, Question question)
         {
-            if (type == QuestionType.TrueFalse && answer is int tfVal and (0 or 1))
+            if (type == QuestionType.TrueFalse && answer is int tfVal && (tfVal == 0 || tfVal == 1))
                 return tfVal == 0 ? "Правда" : "Неправда";
 
             return answer switch
@@ -76,6 +159,7 @@ namespace Quizzamination.Views
                 _ => answer.ToString() ?? ""
             };
         }
+
         private string FormatCorrectAnswer(Question question)
         {
             return question.Type switch
@@ -99,6 +183,5 @@ namespace Quizzamination.Views
                 _ => "(невідомо)"
             };
         }
-
     }
 }
