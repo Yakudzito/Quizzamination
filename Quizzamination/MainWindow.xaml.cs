@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Quizzamination.Models;
 using Quizzamination.Services;
 using Quizzamination.Views;
+using Quizzamination.Views.Controls;
 
 namespace Quizzamination
 {
@@ -32,6 +33,7 @@ namespace Quizzamination
 
         private void ShowCurrentQuestion()
         {
+            if (_currentIndex >= _questions.Count) return;
             var question = _questions[_currentIndex];
             UserControl control = question.Type switch
             {
@@ -52,7 +54,6 @@ namespace Quizzamination
             object? userAnswer = GetUserAnswer(question);
             bool isCorrect = EvaluateAnswer(question, userAnswer);
             _results.Add(new AnswerResult(question, userAnswer, isCorrect));
-
             if (_currentIndex < _questions.Count - 1)
             {
                 _currentIndex++;
@@ -60,8 +61,8 @@ namespace Quizzamination
             }
             else
             {
-                int correctCount = _results.Count(r => r.IsCorrect);
-                MessageBox.Show($"Тест завершено!\nПравильних відповідей: {correctCount} з {_results.Count}.", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
+                var resultsWindow = new ResultsWindow(_results);
+                resultsWindow.ShowDialog();
             }
         }
 
