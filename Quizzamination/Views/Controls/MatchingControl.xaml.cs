@@ -12,15 +12,15 @@ namespace Quizzamination.Views.Controls
         public Question Question { get; }
         private readonly Dictionary<string, ComboBox> _comboBoxes = new();
 
-        public MatchingControl(Question question)
+        public MatchingControl(Question question, Dictionary<string, string>? savedPairs = null)
         {
             InitializeComponent();
             Question = question;
             this.DataContext = question;
-            LoadMatchingItems();
+            LoadMatchingItems(savedPairs);
         }
 
-        private void LoadMatchingItems()
+        private void LoadMatchingItems(Dictionary<string, string>? savedPairs)
         {
             var panel = new StackPanel();
             if (Question.MatchPairs != null)
@@ -38,6 +38,11 @@ namespace Quizzamination.Views.Controls
                         ItemsSource = values,
                         Tag = pair.Key
                     };
+
+                    if (savedPairs != null && savedPairs.TryGetValue(pair.Key, out string? selected))
+                    {
+                        combo.SelectedItem = selected;
+                    }
 
                     _comboBoxes[pair.Key] = combo;
                     row.Children.Add(combo);

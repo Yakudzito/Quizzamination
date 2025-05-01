@@ -10,11 +10,16 @@ namespace Quizzamination.Views.Controls
     {
         public Question Question { get; }
 
-        public ShortAnswerControl(Question question)
+        public ShortAnswerControl(Question question, string? savedAnswer = null)
         {
             InitializeComponent();
             Question = question;
             this.DataContext = question;
+
+            if (!string.IsNullOrWhiteSpace(savedAnswer))
+            {
+                AnswerBox.Text = savedAnswer;
+            }
         }
 
         public string GetAnswerText() => AnswerBox.Text.Trim();

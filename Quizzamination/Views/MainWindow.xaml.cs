@@ -11,9 +11,10 @@ namespace Quizzamination.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int _currentIndex = 0;
         private List<Question> _questions;
         private List<AnswerResult> _results = new();
-        private int _currentIndex = 0;
+        private Dictionary<int, object?> _userAnswers = new(); // зберігає відповідь по індексу
 
         public MainWindow()
         {
@@ -25,26 +26,42 @@ namespace Quizzamination.Views
         private void ShowCurrentQuestion()
         {
             if (_currentIndex >= _questions.Count) return;
+
             var question = _questions[_currentIndex];
+            _userAnswers.TryGetValue(_currentIndex, out var savedAnswer);
+
             UserControl control = question.Type switch
             {
-                QuestionType.SingleChoice => new SingleChoiceControl(question),
-                QuestionType.TrueFalse => new TrueFalseControl(question),
-                QuestionType.MultipleChoice => new MultipleChoiceControl(question),
-                QuestionType.Matching => new MatchingControl(question),
-                QuestionType.ShortAnswer => new ShortAnswerControl(question),
-                _ => new UserControl { Content = new TextBlock { Text = "Цей тип питання ще не реалізований" } }
+                QuestionType.SingleChoice => new SingleChoiceControl(question, savedAnswer as int?),
+                QuestionType.TrueFalse => new TrueFalseControl(question, savedAnswer as int?),
+                QuestionType.MultipleChoice => new MultipleChoiceControl(question, savedAnswer as List<int>),
+                QuestionType.Matching => new MatchingControl(question, savedAnswer as Dictionary<string, string>),
+                QuestionType.ShortAnswer => new ShortAnswerControl(question, savedAnswer as string),
+                _ => new UserControl { Content = new TextBlock { Text = "Цей тип ще не підтримується" } }
             };
 
             QuestionHost.Content = control;
         }
-
-        private void NextButton_Click(object sender, RoutedEventArgs e)
+        private void SaveCurrentAnswer()
         {
             var question = _questions[_currentIndex];
-            object? userAnswer = GetUserAnswer(question);
-            bool isCorrect = EvaluateAnswer(question, userAnswer);
-            _results.Add(new AnswerResult(question, userAnswer, isCorrect));
+            var answer = GetUserAnswer(question);
+            _userAnswers[_currentIndex] = answer;
+        }
+        private void GenerateResults()
+        {
+            _results.Clear();
+            for (int i = 0; i < _questions.Count; i++)
+            {
+                var q = _questions[i];
+                var a = _userAnswers.ContainsKey(i) ? _userAnswers[i] : null;
+                bool isCorrect = EvaluateAnswer(q, a);
+                _results.Add(new AnswerResult(q, a, isCorrect));
+            }
+        }
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveCurrentAnswer();
             if (_currentIndex < _questions.Count - 1)
             {
                 _currentIndex++;
@@ -52,11 +69,20 @@ namespace Quizzamination.Views
             }
             else
             {
+                GenerateResults();
                 var resultsWindow = new ResultsWindow(_results);
                 resultsWindow.ShowDialog();
             }
         }
-
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveCurrentAnswer();
+            if (_currentIndex > 0)
+            {
+                _currentIndex--;
+                ShowCurrentQuestion();
+            }
+        }
         private object? GetUserAnswer(Question question)
         {
             return QuestionHost.Content switch
@@ -75,9 +101,6 @@ namespace Quizzamination.Views
             if (question.Type != QuestionType.ShortAnswer && question.Type != QuestionType.Matching &&
                 (userAnswer == null || question.CorrectAnswers == null))
                 return false;
-
-            System.Diagnostics.Debug.WriteLine($"Очікується: {string.Join(", ", question.CorrectAnswers ?? new List<int>())}");
-            System.Diagnostics.Debug.WriteLine($"Отримано: {userAnswer}");
 
             return question.Type switch
             {
@@ -101,5 +124,7 @@ namespace Quizzamination.Views
                 _ => false
             };
         }
+
+
     }
 }

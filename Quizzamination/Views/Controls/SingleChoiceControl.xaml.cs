@@ -10,24 +10,29 @@ namespace Quizzamination.Views.Controls
     {
         public Question Question { get; }
 
-        public SingleChoiceControl(Question question)
+        public SingleChoiceControl(Question question, int? savedIndex = null)
         {
             InitializeComponent();
             Question = question;
             this.DataContext = question;
-            LoadOptions();
+            LoadOptions(savedIndex);
         }
 
-        private void LoadOptions()
+        private void LoadOptions(int? savedIndex)
         {
             OptionsList.Children.Clear();
             for (int i = 0; i < Question.Options?.Count; i++)
             {
                 var option = Question.Options[i];
-                var radio = new RadioButton { Content = option, Tag = i };
+                var radio = new RadioButton { Content = option, Tag = i, GroupName = "single" };
+                if (savedIndex.HasValue && savedIndex.Value == i)
+                {
+                    radio.IsChecked = true;
+                }
                 OptionsList.Children.Add(radio);
             }
         }
+
         public int? GetSelectedIndex()
         {
             foreach (var child in OptionsList.Children)
