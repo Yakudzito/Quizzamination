@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Quizzamination.Models;
 
-namespace Quizzamination
+namespace Quizzamination.Models
 {
     public class AnswerResult
     {
