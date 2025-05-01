@@ -21,6 +21,7 @@ namespace Quizzamination.Views
     public partial class MatchingControl : UserControl
     {
         public Question Question { get; }
+        private readonly Dictionary<string, ComboBox> _comboBoxes = new();
 
         public MatchingControl(Question question)
         {
@@ -35,16 +36,40 @@ namespace Quizzamination.Views
             var panel = new StackPanel();
             if (Question.MatchPairs != null)
             {
+                var values = Question.MatchPairs.Values.Distinct().ToList();
+
                 foreach (var pair in Question.MatchPairs)
                 {
-                    var row = new StackPanel { Orientation = Orientation.Horizontal };
+                    var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
                     row.Children.Add(new TextBlock { Text = pair.Key, Width = 150 });
-                    row.Children.Add(new ComboBox { Width = 150, ItemsSource = Question.MatchPairs.Values });
+
+                    var combo = new ComboBox
+                    {
+                        Width = 150,
+                        ItemsSource = values,
+                        Tag = pair.Key
+                    };
+
+                    _comboBoxes[pair.Key] = combo;
+                    row.Children.Add(combo);
                     panel.Children.Add(row);
                 }
             }
             MatchList.Items.Clear();
             MatchList.Items.Add(panel);
+        }
+
+        public Dictionary<string, string> GetSelectedPairs()
+        {
+            var result = new Dictionary<string, string>();
+            foreach (var pair in _comboBoxes)
+            {
+                if (pair.Value.SelectedItem is string selected)
+                {
+                    result[pair.Key] = selected;
+                }
+            }
+            return result;
         }
     }
 }

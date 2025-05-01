@@ -73,28 +73,38 @@ namespace Quizzamination
                 MultipleChoiceControl multiple => multiple.GetSelectedIndexes(),
                 TrueFalseControl tf => tf.GetSelectedIndex(),
                 ShortAnswerControl sa => sa.GetAnswerText(),
+                MatchingControl mc => mc.GetSelectedPairs(),
                 _ => null
             };
-            // Matching та інші типи пізніше
         }
 
         private bool EvaluateAnswer(Question question, object? userAnswer)
         {
+            if (question.Type != QuestionType.ShortAnswer && question.Type != QuestionType.Matching &&
+                (userAnswer == null || question.CorrectAnswers == null))
+                return false;
 
-            if (userAnswer == null) return false;
+            System.Diagnostics.Debug.WriteLine($"Очікується: {string.Join(", ", question.CorrectAnswers ?? new List<int>())}");
+            System.Diagnostics.Debug.WriteLine($"Отримано: {userAnswer}");
 
             return question.Type switch
             {
                 QuestionType.SingleChoice or QuestionType.TrueFalse =>
-                    question.CorrectAnswers != null && question.CorrectAnswers.FirstOrDefault() == (int?)userAnswer,
+                    userAnswer is int selected && question.CorrectAnswers!.Contains(selected),
 
                 QuestionType.MultipleChoice =>
-                    userAnswer is List<int> selected && question.CorrectAnswers != null &&
-                    selected.OrderBy(x => x).SequenceEqual(question.CorrectAnswers.OrderBy(x => x)),
+                    userAnswer is List<int> selectedList &&
+                    question.CorrectAnswers != null &&
+                    selectedList.OrderBy(x => x).SequenceEqual(question.CorrectAnswers.OrderBy(x => x)),
 
                 QuestionType.ShortAnswer =>
-                    question.CorrectShortAnswer != null &&
-                    string.Equals(question.CorrectShortAnswer.Trim(), (userAnswer as string)?.Trim(), System.StringComparison.OrdinalIgnoreCase),
+                    string.Equals(question.CorrectShortAnswer, userAnswer as string, System.StringComparison.OrdinalIgnoreCase),
+
+                QuestionType.Matching =>
+                    userAnswer is Dictionary<string, string> dict &&
+                    question.MatchPairs != null &&
+                    dict.Count == question.MatchPairs.Count &&
+                    !question.MatchPairs.Except(dict).Any(),
 
                 _ => false
             };
