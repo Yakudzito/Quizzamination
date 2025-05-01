@@ -1,19 +1,9 @@
-﻿using Quizzamination.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Quizzamination.Models;
 
-namespace Quizzamination.Views.Controls
+namespace Quizzamination.Views
 {
     /// <summary>
     /// Interaction logic for ResultsWindow.xaml
@@ -68,7 +58,7 @@ namespace Quizzamination.Views.Controls
 
         private string FormatAnswer(object? answer, QuestionType type, Question question)
         {
-            if (type == QuestionType.TrueFalse && answer is int tfVal && (tfVal == 0 || tfVal == 1))
+            if (type == QuestionType.TrueFalse && answer is int tfVal and (0 or 1))
                 return tfVal == 0 ? "Правда" : "Неправда";
 
             return answer switch
