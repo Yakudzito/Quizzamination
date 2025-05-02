@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Node.js Tools for Visual Studio (NTVS) project files
+package.json
+package-lock.json
+node_modules/
+commitlint.config.js
+.commitlint/
