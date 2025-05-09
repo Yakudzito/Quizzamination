@@ -7,16 +7,36 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ContentControl x:Name="QuestionHost" Margin="10"/>
-        <Button Content="Назад"
-                Click="PreviousButton_Click"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Margin="10"/>
-        <Button Content="Далі"
-                Click="NextButton_Click"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="10"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="90*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <TextBlock x:Name="QuestionNumberTextBlock"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="10,0"/>
+                <TextBlock x:Name="TimerTextBlock"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="10, 0"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row ="1"
+              Margin="10">
+            <ContentControl x:Name="QuestionHost"/>
+            <Button Content="Назад"
+                    Click="PreviousButton_Click"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="10"/>
+            <Button Content="Далі"
+                    Click="NextButton_Click"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="10"/>
+        </Grid>
     </Grid>
 </Window>

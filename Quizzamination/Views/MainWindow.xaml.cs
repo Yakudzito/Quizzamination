@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using Quizzamination.Models;
 using Quizzamination.Services;
 using Quizzamination.Views.Controls;
+using System.Windows.Threading;
 
 namespace Quizzamination.Views
 {
@@ -11,16 +12,19 @@ namespace Quizzamination.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int _currentIndex = 0;
-        private List<Question> _questions;
-        private List<AnswerResult> _results = new();
-        private Dictionary<int, object?> _userAnswers = new(); // зберігає відповідь по індексу
+        private DispatcherTimer _timer = null!;
+        private TimeSpan _elapsed;
+        private int _currentIndex;
+        private readonly List<Question> _questions;
+        private readonly List<AnswerResult> _results = [];
+        private readonly Dictionary<int, object?> _userAnswers = new(); // зберігає відповідь по індексу
 
         public MainWindow()
         {
             InitializeComponent();
             _questions = TestLoader.LoadFromFile("test1.json");
             ShowCurrentQuestion();
+            StartTimer();
         }
 
         private void ShowCurrentQuestion()
@@ -40,6 +44,8 @@ namespace Quizzamination.Views
                 _ => new UserControl { Content = new TextBlock { Text = "Цей тип ще не підтримується" } }
             };
 
+            QuestionNumberTextBlock.Text = $"Питання {_currentIndex + 1} з {_questions.Count}";
+            
             QuestionHost.Content = control;
         }
         private void SaveCurrentAnswer()
@@ -96,6 +102,21 @@ namespace Quizzamination.Views
             };
         }
 
+        private void StartTimer()
+        {
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            _timer.Tick += TickEvent;
+            _timer.Start();
+        }
+
+        private void TickEvent(object? sender, EventArgs e)
+        {
+            _elapsed += TimeSpan.FromSeconds(1);
+            TimerTextBlock.Text = $"Час: {_elapsed.Hours:D2}:{_elapsed.Minutes:D2}:{_elapsed.Seconds:D2}";
+        }
         private bool EvaluateAnswer(Question question, object? userAnswer)
         {
             if (question.Type != QuestionType.ShortAnswer && question.Type != QuestionType.Matching &&
@@ -113,7 +134,7 @@ namespace Quizzamination.Views
                     selectedList.OrderBy(x => x).SequenceEqual(question.CorrectAnswers.OrderBy(x => x)),
 
                 QuestionType.ShortAnswer =>
-                    string.Equals(question.CorrectShortAnswer, userAnswer as string, System.StringComparison.OrdinalIgnoreCase),
+                    string.Equals(question.CorrectShortAnswer, userAnswer as string, StringComparison.OrdinalIgnoreCase),
 
                 QuestionType.Matching =>
                     userAnswer is Dictionary<string, string> dict &&
