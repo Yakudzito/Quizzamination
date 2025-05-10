@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using Quizzamination.Models;
 
 namespace Quizzamination.Views.Controls
@@ -23,7 +24,12 @@ namespace Quizzamination.Views.Controls
             for (int i = 0; i < Question.Options?.Count; i++)
             {
                 var option = Question.Options[i];
-                var checkbox = new CheckBox { Content = option, Tag = i };
+                var checkbox = new CheckBox
+                {
+                    Content = option,
+                    Tag = i,
+                    VerticalContentAlignment = VerticalAlignment.Center
+                };
                 if (savedAnswers != null && savedAnswers.Contains(i))
                 {
                     checkbox.IsChecked = true;

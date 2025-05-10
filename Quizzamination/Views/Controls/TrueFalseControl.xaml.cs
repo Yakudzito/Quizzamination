@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using Quizzamination.Models;
 
 namespace Quizzamination.Views.Controls
@@ -21,8 +22,20 @@ namespace Quizzamination.Views.Controls
         private void LoadOptions(int? savedIndex)
         {
             OptionsPanel.Children.Clear();
-            var trueRadio = new RadioButton { Content = "Правда", Tag = 0, GroupName = "tf" };
-            var falseRadio = new RadioButton { Content = "Неправда", Tag = 1, GroupName = "tf" };
+            var trueRadio = new RadioButton
+            {
+                Content = "Правда", 
+                Tag = 0, 
+                GroupName = "tf",
+                VerticalContentAlignment = VerticalAlignment.Center,
+            };
+            var falseRadio = new RadioButton
+            {
+                Content = "Неправда", 
+                Tag = 1, 
+                GroupName = "tf",
+                VerticalContentAlignment = VerticalAlignment.Center,
+            };
 
             if (savedIndex == 0) trueRadio.IsChecked = true;
             if (savedIndex == 1) falseRadio.IsChecked = true;

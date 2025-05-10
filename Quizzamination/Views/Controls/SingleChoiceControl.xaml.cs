@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using Quizzamination.Models;
 
 namespace Quizzamination.Views.Controls
@@ -24,7 +25,13 @@ namespace Quizzamination.Views.Controls
             for (int i = 0; i < Question.Options?.Count; i++)
             {
                 var option = Question.Options[i];
-                var radio = new RadioButton { Content = option, Tag = i, GroupName = "single" };
+                var radio = new RadioButton
+                {
+                    Content = option, 
+                    Tag = i, 
+                    GroupName = "single",
+                    VerticalContentAlignment = VerticalAlignment.Center
+                };
                 if (savedIndex.HasValue && savedIndex.Value == i)
                 {
                     radio.IsChecked = true;

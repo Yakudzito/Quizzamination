@@ -45,7 +45,7 @@ namespace Quizzamination.Views
             };
 
             QuestionNumberTextBlock.Text = $"Питання {_currentIndex + 1} з {_questions.Count}";
-            
+            NextButton.Content = (_currentIndex == _questions.Count - 1) ? "Завершити" : "Далі";
             QuestionHost.Content = control;
         }
         private void SaveCurrentAnswer()

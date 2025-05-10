@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Quizzamination"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
@@ -26,17 +27,23 @@
         </Grid>
         <Grid Grid.Row ="1"
               Margin="10">
-            <ContentControl x:Name="QuestionHost"/>
+            <ContentControl x:Name="QuestionHost"
+                            FontSize="20"/>
             <Button Content="Назад"
                     Click="PreviousButton_Click"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    Margin="10"/>
-            <Button Content="Далі"
+                    Margin="10"
+                    Width="150"
+                    Height="30"/>
+            <Button x:Name="NextButton"
+                    Content="Далі"
                     Click="NextButton_Click"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Margin="10"/>
+                    Margin="10"
+                    Width="150"
+                    Height="30"/>
         </Grid>
     </Grid>
 </Window>
