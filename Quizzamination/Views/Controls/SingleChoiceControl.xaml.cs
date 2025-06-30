@@ -11,6 +11,22 @@ namespace Quizzamination.Views.Controls
     {
         public Question Question { get; }
 
+        RadioButton CreateWrappedRadioButton(string text, object tag)
+        {
+            var textBlock = new TextBlock
+            {
+                Text = text,
+                TextWrapping = TextWrapping.Wrap,
+            };
+
+            return new RadioButton
+            {
+                Content = textBlock,
+                Tag = tag,
+                GroupName = "single",
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+        }
         public SingleChoiceControl(Question question, int? savedIndex = null)
         {
             InitializeComponent();
@@ -25,13 +41,7 @@ namespace Quizzamination.Views.Controls
             for (int i = 0; i < Question.Options?.Count; i++)
             {
                 var option = Question.Options[i];
-                var radio = new RadioButton
-                {
-                    Content = option, 
-                    Tag = i, 
-                    GroupName = "single",
-                    VerticalContentAlignment = VerticalAlignment.Center
-                };
+                var radio = CreateWrappedRadioButton(option, i);
                 if (savedIndex.HasValue && savedIndex.Value == i)
                 {
                     radio.IsChecked = true;
