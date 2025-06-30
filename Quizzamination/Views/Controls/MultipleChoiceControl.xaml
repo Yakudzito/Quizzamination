@@ -7,7 +7,7 @@
         mc:Ignorable="d">
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding Text}" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="{Binding Text}" FontWeight="Bold" Margin="0,0,0,10" TextWrapping="Wrap"/>
             <StackPanel x:Name="OptionsList" />
         </StackPanel>
     </Grid>

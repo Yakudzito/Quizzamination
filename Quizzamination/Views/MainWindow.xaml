@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Quizzamination"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
+        MinWidth="380" MinHeight="300"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
