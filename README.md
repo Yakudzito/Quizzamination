@@ -126,6 +126,13 @@ This project is part of a long-term learning journey and open to collaboration.
 
 ---
 
+## 📚 Documentation
+
+- [ROADMAP.md](./ROADMAP.md) – planned features and future versions
+- [CHANGELOG.md](./CHANGELOG.md) – full list of changes per version
+
+---
+
 ## 🛡 License
 
 This project is licensed under the [MIT License](./LICENSE).
