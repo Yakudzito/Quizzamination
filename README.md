@@ -122,7 +122,6 @@ This project is part of a long-term learning journey and open to collaboration.
 ## 🙌 Credits
 
 * .NET and WPF — Microsoft
-* Icons and illustrations — [Flaticon](https://www.flaticon.com/) / [Material Design](https://material.io/)
 * Inspiration — students who hate paper tests 😅
 
 ---
