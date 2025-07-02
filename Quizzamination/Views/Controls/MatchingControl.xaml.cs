@@ -32,10 +32,13 @@ namespace Quizzamination.Views.Controls
                     var row = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 4) };
                     row.Children.Add(new TextBlock { Text = pair.Key, Width = 150 });
 
+                    var shuffledValues = Question.MatchPairs.Values.Distinct().ToList();
+                    shuffledValues.Shuffle();
+
                     var combo = new ComboBox
                     {
                         Width = 150,
-                        ItemsSource = values,
+                        ItemsSource = shuffledValues,
                         Tag = pair.Key
                     };
 
