@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Quizzamination.Models;
 using Quizzamination.Services;
 using Quizzamination.Views.Controls;
@@ -35,7 +36,7 @@ namespace Quizzamination.Views
         public MainWindow()
         {
             InitializeComponent();
-            _questions = TestLoader.LoadFromFile("3.6.json");
+            _questions = TestLoader.LoadFromFile("test.json");
             _questions.Shuffle();
             ShowCurrentQuestion();
             StartTimer();
@@ -89,6 +90,8 @@ namespace Quizzamination.Views
             }
             else
             {
+                TimerTextBlock.Foreground = Brushes.Blue;
+                _timer.Stop();
                 GenerateResults();
                 var resultsWindow = new ResultsWindow(_results);
                 resultsWindow.ShowDialog();
