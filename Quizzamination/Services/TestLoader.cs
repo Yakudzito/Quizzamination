@@ -12,15 +12,16 @@ namespace Quizzamination.Services
 {
     public static class TestLoader
     {
-        public static List<Question> LoadFromFile(string path)
+        public static List<Question> LoadFromFile(string filePath)
         {
-            var json = File.ReadAllText(path);
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
                 Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
             };
-            return JsonSerializer.Deserialize<List<Question>>(json, options)!;
+
+            using var streamReader = File.OpenRead(filePath);
+            return JsonSerializer.Deserialize<List<Question>>(streamReader, options)!;
         }
     }
 }
