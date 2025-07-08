@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Security.AccessControl;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Quizzamination.Models;
@@ -26,6 +27,9 @@ namespace Quizzamination.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _isLimitedTime = true;
+        private TimeSpan _timeLimit = TimeSpan.FromSeconds(3);
+
         private DispatcherTimer _timer = null!;
         private TimeSpan _elapsed;
         private int _currentIndex;
@@ -79,6 +83,8 @@ namespace Quizzamination.Views
                 bool isCorrect = EvaluateAnswer(q, a);
                 _results.Add(new AnswerResult(q, a, isCorrect));
             }
+            var resultsWindow = new ResultsWindow(_results);
+            resultsWindow.ShowDialog();
         }
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
@@ -93,8 +99,6 @@ namespace Quizzamination.Views
                 TimerTextBlock.Foreground = Brushes.Blue;
                 _timer.Stop();
                 GenerateResults();
-                var resultsWindow = new ResultsWindow(_results);
-                resultsWindow.ShowDialog();
             }
         }
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
@@ -125,14 +129,28 @@ namespace Quizzamination.Views
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
+            _elapsed = _isLimitedTime ? _timeLimit : TimeSpan.Zero;
             _timer.Tick += TickEvent;
             _timer.Start();
         }
 
         private void TickEvent(object? sender, EventArgs e)
         {
-            _elapsed += TimeSpan.FromSeconds(1);
+            if (_isLimitedTime)
+            {
+                _elapsed -= TimeSpan.FromSeconds(1);
+            }
+            else
+            {
+                _elapsed += TimeSpan.FromSeconds(1);
+            }
             TimerTextBlock.Text = $"Час: {_elapsed.Hours:D2}:{_elapsed.Minutes:D2}:{_elapsed.Seconds:D2}";
+
+            if (_elapsed == TimeSpan.Zero && _isLimitedTime)
+            {
+                _timer.Stop();
+                GenerateResults();
+            }
         }
         private bool EvaluateAnswer(Question question, object? userAnswer)
         {
