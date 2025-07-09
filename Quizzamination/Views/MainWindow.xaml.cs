@@ -27,25 +27,37 @@ namespace Quizzamination.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool _isLimitedTime = true;
-        private TimeSpan _timeLimit = TimeSpan.FromSeconds(3);
+        private bool _isLimitedTime = false;
+        private TimeSpan _timeLimit = TimeSpan.FromSeconds(1000);
+        
+        // Question limitation mode
+        private int _questionCount = 2;
+
+        private bool _isShuffled = true;
 
         private DispatcherTimer _timer = null!;
         private TimeSpan _elapsed;
+        
         private int _currentIndex;
-        private readonly List<Question> _questions;
+        private List<Question> _questions = [];
         private readonly List<AnswerResult> _results = [];
         private readonly Dictionary<int, object?> _userAnswers = new(); // зберігає відповідь по індексу
 
         public MainWindow()
         {
             InitializeComponent();
-            _questions = TestLoader.LoadFromFile("test.json");
-            _questions.Shuffle();
+            LoadQuestions("test.json", _isShuffled);
             ShowCurrentQuestion();
             StartTimer();
         }
 
+
+        private void LoadQuestions(string filePath, bool isShuffled)
+        {
+            _questions = TestLoader.LoadFromFile(filePath);
+            if (isShuffled) _questions.Shuffle();
+            _questions = _questions.Take(_questionCount).ToList();
+        }
         private void ShowCurrentQuestion()
         {
             if (_currentIndex >= _questions.Count) return;

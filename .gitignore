@@ -368,3 +368,4 @@ package-lock.json
 node_modules/
 commitlint.config.js
 .husky/
+.commitlint/
