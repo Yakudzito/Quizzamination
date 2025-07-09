@@ -4,7 +4,7 @@ This document outlines planned features and improvements for future releases of 
 
 ---
 
-## ✅ Version 1.1 (Current)
+## ✅ Version 0.1.1 (Current)
 
 * Core support for all question types (single, multiple, matching, true/false, short answer)
 * Local JSON-based question loading
@@ -13,7 +13,7 @@ This document outlines planned features and improvements for future releases of 
 
 ---
 
-## 🚧 Planned for Version 1.2
+## 🚧 Planned for Version 0.2.0
 
 ### 🛠 Fixes
 
