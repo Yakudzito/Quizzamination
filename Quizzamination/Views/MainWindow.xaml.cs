@@ -27,6 +27,8 @@ namespace Quizzamination.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _isLearningMode = false;
+
         private bool _isLimitedTime = false;
         private TimeSpan _timeLimit = TimeSpan.FromSeconds(1000);
         

@@ -37,6 +37,14 @@
                     Margin="10"
                     Width="150"
                     Height="30"/>
+            <Button x:Name="CheckAnswerButton"
+                    Content="Перевірити"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Margin="10"
+                    Width="150"
+                    Height="30"
+                    Visibility="Collapsed"/>
             <Button x:Name="NextButton"
                     Content="Далі"
                     Click="NextButton_Click"
