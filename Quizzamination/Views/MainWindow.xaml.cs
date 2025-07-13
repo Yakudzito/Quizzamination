@@ -200,11 +200,15 @@ namespace Quizzamination.Views
 
         private void CheckAnswerButton_Click(object sender, RoutedEventArgs e)
         {
-            if (QuestionHost.Content is SingleChoiceControl single)
+            switch (QuestionHost.Content)
             {
-                single.HighlightAnswer();
+                case SingleChoiceControl single:
+                    single.HighlightAnswer();
+                    break;
+                case MultipleChoiceControl multiple:
+                    multiple.HighlightAnswer();
+                    break;
             }
-
         }
     }
 }

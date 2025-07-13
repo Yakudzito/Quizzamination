@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Quizzamination.Models;
 
 namespace Quizzamination.Views.Controls
@@ -42,9 +43,34 @@ namespace Quizzamination.Views.Controls
         {
             var selected = new List<int>();
             foreach (var child in OptionsList.Children)
-                if (child is CheckBox cb && cb.IsChecked == true)
+                if (child is CheckBox {IsChecked: true} cb)
                     selected.Add((int)cb.Tag);
             return selected;
+        }
+
+        public void HighlightAnswer()
+        {
+            if (Question.CorrectAnswers == null || Question.CorrectAnswers.Count == 0)
+                return;
+
+            var correctIndexes = Question.CorrectAnswers;
+            var chosenIndexes = GetSelectedIndexes();
+
+            for (int i = 0; i < OptionsList.Children.Count; i++)
+            {
+                if (OptionsList.Children[i] is CheckBox { Tag: int index } cb)
+                {
+                    bool isCorrect = correctIndexes.Contains(index);
+                    bool isChosen = chosenIndexes.Contains(index);
+
+                    cb.Foreground = isCorrect switch
+                    {
+                        true => Brushes.Green,
+                        false when isChosen => Brushes.Red,
+                        _ => Brushes.Black
+                    };
+                }
+            }
         }
     }
 }
