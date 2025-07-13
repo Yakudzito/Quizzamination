@@ -44,7 +44,8 @@
                     Margin="10"
                     Width="150"
                     Height="30"
-                    Visibility="Collapsed"/>
+                    Visibility="Collapsed" 
+                    Click="CheckAnswerButton_Click"/>
             <Button x:Name="NextButton"
                     Content="Далі"
                     Click="NextButton_Click"

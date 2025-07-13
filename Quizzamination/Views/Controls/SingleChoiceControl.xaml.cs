@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Quizzamination.Models;
 
 namespace Quizzamination.Views.Controls
@@ -9,7 +10,7 @@ namespace Quizzamination.Views.Controls
     /// </summary>
     public partial class SingleChoiceControl : UserControl
     {
-        public Question Question { get; }
+        private Question Question { get; }
 
         RadioButton CreateWrappedRadioButton(string text, object tag)
         {
@@ -56,6 +57,27 @@ namespace Quizzamination.Views.Controls
                 if (child is RadioButton rb && rb.IsChecked == true)
                     return (int?)rb.Tag;
             return null;
+        }
+
+        public void HighlightAnswer()
+        {
+            if (Question.CorrectAnswers == null || Question.CorrectAnswers.Count == 0)
+                return;
+
+            int correctIndex = Question.CorrectAnswers[0];
+            int? selectedIndex = GetSelectedIndex();
+
+            for (int i = 0; i < OptionsList.Children.Count; i++)
+            {
+                if (OptionsList.Children[i] is RadioButton rb)
+                {
+                    if ((int)rb.Tag == correctIndex) rb.Foreground = Brushes.Green;
+                    else if (selectedIndex.HasValue && (int)rb.Tag == selectedIndex.Value &&
+                        selectedIndex.Value != correctIndex)
+                        rb.Foreground = Brushes.Red;
+                    else rb.Foreground = Brushes.Black;
+                }
+            }
         }
     }
 }

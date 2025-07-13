@@ -27,15 +27,16 @@ namespace Quizzamination.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool _isLearningMode = false;
+        private bool _isLearningMode = true;
 
         private bool _isLimitedTime = false;
         private TimeSpan _timeLimit = TimeSpan.FromSeconds(1000);
         
         // Question limitation mode
-        private int _questionCount = 2;
+        private bool _isLimitedQuestions = false;
+        private int _questionCount = 10;
 
-        private bool _isShuffled = true;
+        private bool _isShuffled = false;
 
         private DispatcherTimer _timer = null!;
         private TimeSpan _elapsed;
@@ -48,6 +49,7 @@ namespace Quizzamination.Views
         public MainWindow()
         {
             InitializeComponent();
+            if (_isLearningMode) CheckAnswerButton.Visibility = Visibility.Visible;
             LoadQuestions("test.json", _isShuffled);
             ShowCurrentQuestion();
             StartTimer();
@@ -58,7 +60,8 @@ namespace Quizzamination.Views
         {
             _questions = TestLoader.LoadFromFile(filePath);
             if (isShuffled) _questions.Shuffle();
-            _questions = _questions.Take(_questionCount).ToList();
+            if (_isLimitedQuestions && _questionCount > 0 && _questionCount < _questions.Count)
+                _questions = _questions.Take(_questionCount).ToList();
         }
         private void ShowCurrentQuestion()
         {
@@ -195,6 +198,13 @@ namespace Quizzamination.Views
             };
         }
 
+        private void CheckAnswerButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (QuestionHost.Content is SingleChoiceControl single)
+            {
+                single.HighlightAnswer();
+            }
 
+        }
     }
 }
