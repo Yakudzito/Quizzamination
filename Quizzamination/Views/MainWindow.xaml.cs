@@ -208,6 +208,9 @@ namespace Quizzamination.Views
                 case MultipleChoiceControl multiple:
                     multiple.HighlightAnswer();
                     break;
+                case TrueFalseControl tf:
+                    tf.HighlightAnswer();
+                    break;
             }
         }
     }
