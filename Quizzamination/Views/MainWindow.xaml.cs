@@ -211,6 +211,9 @@ namespace Quizzamination.Views
                 case TrueFalseControl tf:
                     tf.HighlightAnswer();
                     break;
+                case ShortAnswerControl @short:
+                    @short.ShowAnswer();
+                    break;
             }
         }
     }

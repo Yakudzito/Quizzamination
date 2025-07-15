@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
 using Quizzamination.Models;
 
 namespace Quizzamination.Views.Controls
@@ -23,5 +24,19 @@ namespace Quizzamination.Views.Controls
         }
 
         public string GetAnswerText() => AnswerBox.Text.Trim();
+
+        public async void ShowAnswer()
+        {
+            if (Question.CorrectShortAnswer == null)
+                return;
+            
+            string correctAnswer = Question.CorrectShortAnswer;
+            AnswerBox.Text = correctAnswer;
+            AnswerBox.Foreground = Brushes.Green;
+
+            await Task.Delay(1000);
+
+            AnswerBox.Foreground = Brushes.Black;
+        }
     }
 }
