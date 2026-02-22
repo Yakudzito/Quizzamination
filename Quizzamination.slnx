@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Quizzamination.Avalonia/Quizzamination.Avalonia.csproj" />
+  <Project Path="Quizzamination.Core/Quizzamination.Core.csproj" />
+</Solution>
