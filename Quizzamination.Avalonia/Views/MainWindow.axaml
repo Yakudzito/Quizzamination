@@ -12,7 +12,6 @@
   </Design.DataContext>
 
   <DockPanel Margin="16" LastChildFill="True">
-
     <StackPanel DockPanel.Dock="Top" Spacing="10">
       <TextBlock Text="{Binding Status}" TextWrapping="Wrap"/>
 
@@ -20,6 +19,8 @@
         <TextBox Width="650"
                  Watermark="Шлях до файлу тесту"
                  Text="{Binding SelectedFilePath}" />
+        <Button Content="Огляд..."
+                Click="Browse_Click" />
         <Button Content="Завантажити"
                 Command="{Binding LoadTestCommand}" />
       </StackPanel>
