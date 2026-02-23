@@ -40,7 +40,7 @@ public partial class MainWindow : Window
         
         var path = file.Path.LocalPath;
 
-        if (DataContext is MainWindowViewModel vm)
+        if (DataContext is LoadViewModel vm)
         {
             vm.SelectedFilePath = path;
 

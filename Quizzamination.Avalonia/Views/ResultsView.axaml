@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Quizzamination.Avalonia.ViewModels"
+             x:Class="Quizzamination.Avalonia.Views.ResultsView"
+             x:DataType="vm:ResultsViewModel">
+
+    <StackPanel Margin="16" Spacing="12">
+        <TextBlock Text="{Binding Correct, StringFormat=Правильних: {0}}" FontSize="20"/>
+        <TextBlock Text="{Binding Total, StringFormat=Всього: {0}}" Opacity="0.8"/>
+
+        <Button Content="← Назад до завантаження" Command="{Binding BackCommand}" />
+
+        <Separator/>
+
+        <ListBox ItemsSource="{Binding Results}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="{Binding Question.Text}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding IsCorrect, StringFormat=Correct: {0}}" Opacity="0.7"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
+</UserControl>

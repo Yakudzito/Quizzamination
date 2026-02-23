@@ -1,15 +1,35 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Quizzamination.Avalonia.App"
-             xmlns:local="using:Quizzamination.Avalonia"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             xmlns:views="clr-namespace:Quizzamination.Avalonia.Views"
+             xmlns:vm="clr-namespace:Quizzamination.Avalonia.ViewModels"
+             xmlns:qv="clr-namespace:Quizzamination.Avalonia.Views.Questions"
+             xmlns:qvm="clr-namespace:Quizzamination.Avalonia.ViewModels.Questions"
+             x:Class="Quizzamination.Avalonia.App">
 
     <Application.DataTemplates>
-        <local:ViewLocator/>
+        <DataTemplate DataType="{x:Type vm:LoadViewModel}">
+            <views:LoadView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:RunnerViewModel}">
+            <views:RunnerView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:ResultsViewModel}">
+            <views:ResultsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type qvm:SingleChoiceQuestionViewModel}">
+            <qv:SingleChoiceQuestionView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type qvm:ShortAnswerQuestionViewModel}">
+            <qv:ShortAnswerQuestionView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type qvm:UnsupportedQuestionViewModel}">
+            <qv:UnsupportedQuestionView/>
+        </DataTemplate>
     </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
+
 </Application>

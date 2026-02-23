@@ -28,4 +28,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Quizzamination.Core\Quizzamination.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\LoadView.axaml.cs">
+      <DependentUpon>LoadView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

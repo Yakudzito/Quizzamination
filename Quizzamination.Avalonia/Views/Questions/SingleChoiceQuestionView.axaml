@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:qvm="clr-namespace:Quizzamination.Avalonia.ViewModels.Questions"
+             x:Class="Quizzamination.Avalonia.Views.Questions.SingleChoiceQuestionView"
+             x:DataType="qvm:SingleChoiceQuestionViewModel">
+
+    <StackPanel Spacing="10">
+        <TextBlock Text="{Binding Text}" FontSize="18" TextWrapping="Wrap"/>
+
+        <ListBox ItemsSource="{Binding Options}"
+                 SelectedIndex="{Binding SelectedIndex}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
+</UserControl>

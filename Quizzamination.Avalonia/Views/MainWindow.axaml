@@ -1,44 +1,40 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Quizzamination.Avalonia.ViewModels"
-        xmlns:m="clr-namespace:Quizzamination.Models;assembly=Quizzamination.Core"
+        xmlns:views="clr-namespace:Quizzamination.Avalonia.Views"
+        xmlns:qvm="clr-namespace:Quizzamination.Avalonia.ViewModels.Questions"
+        xmlns:qv="clr-namespace:Quizzamination.Avalonia.Views.Questions"
         x:Class="Quizzamination.Avalonia.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Width="900" Height="550"
+        x:DataType="vm:AppViewModel"
+        Width="900" Height="600"
         Title="Quizzamination">
 
-  <Design.DataContext>
-    <vm:MainWindowViewModel/>
-  </Design.DataContext>
-
-  <DockPanel Margin="16" LastChildFill="True">
-    <StackPanel DockPanel.Dock="Top" Spacing="10">
-      <TextBlock Text="{Binding Status}" TextWrapping="Wrap"/>
-
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <TextBox Width="650"
-                 Watermark="Шлях до файлу тесту"
-                 Text="{Binding SelectedFilePath}" />
-        <Button Content="Огляд..."
-                Click="Browse_Click" />
-        <Button Content="Завантажити"
-                Command="{Binding LoadTestCommand}" />
-      </StackPanel>
-
-      <TextBlock Text="{Binding Questions.Count, StringFormat=Питань: {0}}" />
-      <Separator/>
-    </StackPanel>
-
-    <ListBox ItemsSource="{Binding Questions}">
-      <ListBox.ItemTemplate>
-        <DataTemplate x:DataType="m:Question">
-          <StackPanel Spacing="4">
-            <TextBlock Text="{Binding Type}" Opacity="0.7"/>
-            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
-          </StackPanel>
+    <Window.DataTemplates>
+        <DataTemplate DataType="{x:Type vm:LoadViewModel}">
+            <views:LoadView/>
         </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
 
-  </DockPanel>
+        <DataTemplate DataType="{x:Type vm:RunnerViewModel}">
+            <views:RunnerView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:ResultsViewModel}">
+            <views:ResultsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type qvm:SingleChoiceQuestionViewModel}">
+            <qv:SingleChoiceQuestionView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type qvm:ShortAnswerQuestionViewModel}">
+            <qv:ShortAnswerQuestionView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type qvm:UnsupportedQuestionViewModel}">
+            <qv:UnsupportedQuestionView/>
+        </DataTemplate>
+    </Window.DataTemplates>
+    
+    <ContentControl Content="{Binding Current}"/>
+    
 </Window>

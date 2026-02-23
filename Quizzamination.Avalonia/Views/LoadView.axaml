@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Quizzamination.Avalonia.ViewModels"
+             xmlns:m="clr-namespace:Quizzamination.Models;assembly=Quizzamination.Core"
+             x:Class="Quizzamination.Avalonia.Views.LoadView"
+             x:DataType="vm:LoadViewModel">
+
+    <DockPanel Margin="16" LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Spacing="10">
+            <TextBlock Text="{Binding Status}" TextWrapping="Wrap"/>
+
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBox Width="620"
+                         Watermark="Файл тесту (.json або .txt)"
+                         Text="{Binding SelectedFilePath}" />
+
+                <Button Content="Огляд…" Click="Browse_Click"/>
+                <Button Content="Завантажити" Command="{Binding LoadTestCommand}"/>
+                <Button Content="Почати" Command="{Binding StartCommand}"/>
+            </StackPanel>
+
+            <TextBlock Text="{Binding Questions.Count, StringFormat=Питань: {0}}"/>
+            <Separator/>
+        </StackPanel>
+
+        <ListBox ItemsSource="{Binding Questions}">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="m:Question">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="{Binding Type}" Opacity="0.7"/>
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>

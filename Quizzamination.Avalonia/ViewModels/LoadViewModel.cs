@@ -6,15 +6,18 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Quizzamination.Models;
 using Quizzamination.Services;
+using System.Collections.Generic;
 
 namespace Quizzamination.Avalonia.ViewModels;
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class LoadViewModel : ObservableObject
 {
-    [ObservableProperty] private string status = "Вкажи шлях до файлу тесту (.json або .txt) і натисни Завантажити.";
+    [ObservableProperty] private string status = "Обери файл тесту (.json/.txt), завантаж і натисни Почати.";
     [ObservableProperty] private string? selectedFilePath;
 
     public ObservableCollection<Question> Questions { get; } = new();
+
+    public event Action<IReadOnlyList<Question>>? OnStart;
 
     [RelayCommand]
     private async Task LoadTestAsync()
@@ -24,7 +27,6 @@ public partial class MainWindowViewModel : ObservableObject
             Status = "Файл не обрано.";
             return;
         }
-
         if (!File.Exists(SelectedFilePath))
         {
             Status = "Файл не знайдено.";
@@ -46,5 +48,17 @@ public partial class MainWindowViewModel : ObservableObject
         {
             Status = $"Помилка: {ex.Message}";
         }
+    }
+
+    [RelayCommand]
+    private void Start()
+    {
+        if (Questions.Count == 0)
+        {
+            Status = "Немає питань. Спочатку завантаж тест.";
+            return;
+        }
+
+        OnStart?.Invoke(Questions);
     }
 }
