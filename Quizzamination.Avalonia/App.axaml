@@ -30,6 +30,18 @@
         <DataTemplate DataType="{x:Type qvm:ShortAnswerQuestionViewModel}">
             <qv:ShortAnswerQuestionView/>
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type qvm:TrueFalseQuestionViewModel}">
+            <qv:TrueFalseQuestionView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type qvm:MultipleChoiceQuestionViewModel}">
+            <qv:MultipleChoiceQuestionView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type qvm:MatchingQuestionViewModel}">
+            <qv:MatchingQuestionView/>
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type qvm:UnsupportedQuestionViewModel}">
             <qv:UnsupportedQuestionView/>

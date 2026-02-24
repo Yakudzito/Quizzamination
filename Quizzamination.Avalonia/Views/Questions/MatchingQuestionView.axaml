@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:qvm="clr-namespace:Quizzamination.Avalonia.ViewModels.Questions"
+             x:Class="Quizzamination.Avalonia.Views.Questions.MatchingQuestionView"
+             x:DataType="qvm:MatchingQuestionViewModel">
+
+    <Grid RowDefinitions="Auto,*">
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Text}"
+                   FontSize="18"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,12"/>
+
+        <Border Grid.Row="1" Padding="6" MinHeight="250">
+            <ItemsControl ItemsSource="{Binding Pairs}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="qvm:MatchingPair">
+                        <Grid ColumnDefinitions="*,*" Margin="0,0,0,8">
+                            <TextBlock Grid.Column="0" Text="{Binding Left}" VerticalAlignment="Center"/>
+                            <ComboBox Grid.Column="1"
+                                      ItemsSource="{Binding RightOptions}"
+                                      SelectedItem="{Binding SelectedRight}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+    </Grid>
+</UserControl>

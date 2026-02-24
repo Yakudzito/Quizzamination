@@ -47,6 +47,9 @@ public partial class RunnerViewModel : ObservableObject
     {
         QuestionType.SingleChoice => new SingleChoiceQuestionViewModel(q),
         QuestionType.ShortAnswer => new ShortAnswerQuestionViewModel(q),
+        QuestionType.TrueFalse => new TrueFalseQuestionViewModel(q),
+        QuestionType.MultipleChoice => new MultipleChoiceQuestionViewModel(q),
+        QuestionType.Matching => new MatchingQuestionViewModel(q),
         _ => new UnsupportedQuestionViewModel(q)
     };
 
@@ -65,4 +68,6 @@ public partial class RunnerViewModel : ObservableObject
 
         OnFinished?.Invoke(results);
     }
+    
+    
 }

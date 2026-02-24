@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:qvm="clr-namespace:Quizzamination.Avalonia.ViewModels.Questions"
+             x:Class="Quizzamination.Avalonia.Views.Questions.MultipleChoiceQuestionView"
+             x:DataType="qvm:MultipleChoiceQuestionViewModel">
+
+    <Grid RowDefinitions="Auto,*">
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Text}"
+                   FontSize="18"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,12"/>
+
+        <Border Grid.Row="1" Padding="6" MinHeight="250">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="qvm:ChoiceItemViewModel">
+                        <CheckBox Content="{Binding Text}"
+                                  IsChecked="{Binding IsChecked}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+    </Grid>
+</UserControl>
