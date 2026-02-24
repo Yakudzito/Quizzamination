@@ -4,9 +4,17 @@
              x:Class="Quizzamination.Avalonia.Views.Questions.ShortAnswerQuestionView"
              x:DataType="qvm:ShortAnswerQuestionViewModel">
 
-    <StackPanel Spacing="10">
-        <TextBlock Text="{Binding Text}" FontSize="18" TextWrapping="Wrap"/>
-        <TextBox Watermark="Введи відповідь"
-                 Text="{Binding Answer}"/>
-    </StackPanel>
+    <Grid RowDefinitions="Auto,*">
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Text}"
+                   FontSize="18"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,12"/>
+
+        <Border Grid.Row="1" Padding="6" MinHeight="120">
+            <TextBox Watermark="Введи відповідь"
+                     Text="{Binding Answer}"
+                     VerticalAlignment="Top"/>
+        </Border>
+    </Grid>
 </UserControl>

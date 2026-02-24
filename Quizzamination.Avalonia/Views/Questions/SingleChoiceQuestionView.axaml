@@ -4,16 +4,29 @@
              x:Class="Quizzamination.Avalonia.Views.Questions.SingleChoiceQuestionView"
              x:DataType="qvm:SingleChoiceQuestionViewModel">
 
-    <StackPanel Spacing="10">
-        <TextBlock Text="{Binding Text}" FontSize="18" TextWrapping="Wrap"/>
+    <Grid RowDefinitions="Auto,Auto,*" VerticalAlignment="Stretch">
 
-        <ListBox ItemsSource="{Binding Options}"
-                 SelectedIndex="{Binding SelectedIndex}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </StackPanel>
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Text}"
+                   FontSize="18"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,6"/>
+
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Options.Count, StringFormat=Options: {0}}"
+                   Opacity="0.6"
+                   Margin="0,0,0,10"/>
+
+        <Border Grid.Row="2"
+                BorderThickness="1"
+                Padding="6"
+                MinHeight="250"
+                VerticalAlignment="Stretch">
+
+            <ListBox ItemsSource="{Binding Options}"
+                     SelectedIndex="{Binding SelectedIndex}"
+                     VerticalAlignment="Stretch"/>
+        </Border>
+
+    </Grid>
 </UserControl>

@@ -6,6 +6,10 @@
              xmlns:qvm="clr-namespace:Quizzamination.Avalonia.ViewModels.Questions"
              x:Class="Quizzamination.Avalonia.App">
 
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+
     <Application.DataTemplates>
         <DataTemplate DataType="{x:Type vm:LoadViewModel}">
             <views:LoadView/>

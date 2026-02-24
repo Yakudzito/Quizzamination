@@ -1,40 +1,14 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Quizzamination.Avalonia.ViewModels"
-        xmlns:views="clr-namespace:Quizzamination.Avalonia.Views"
-        xmlns:qvm="clr-namespace:Quizzamination.Avalonia.ViewModels.Questions"
-        xmlns:qv="clr-namespace:Quizzamination.Avalonia.Views.Questions"
         x:Class="Quizzamination.Avalonia.Views.MainWindow"
         x:DataType="vm:AppViewModel"
         Width="900" Height="600"
         Title="Quizzamination">
 
-    <Window.DataTemplates>
-        <DataTemplate DataType="{x:Type vm:LoadViewModel}">
-            <views:LoadView/>
-        </DataTemplate>
+    <Window.DataContext>
+        <vm:AppViewModel/>
+    </Window.DataContext>
 
-        <DataTemplate DataType="{x:Type vm:RunnerViewModel}">
-            <views:RunnerView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type vm:ResultsViewModel}">
-            <views:ResultsView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type qvm:SingleChoiceQuestionViewModel}">
-            <qv:SingleChoiceQuestionView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type qvm:ShortAnswerQuestionViewModel}">
-            <qv:ShortAnswerQuestionView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type qvm:UnsupportedQuestionViewModel}">
-            <qv:UnsupportedQuestionView/>
-        </DataTemplate>
-    </Window.DataTemplates>
-    
     <ContentControl Content="{Binding Current}"/>
-    
 </Window>

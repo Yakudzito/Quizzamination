@@ -4,10 +4,22 @@
              x:Class="Quizzamination.Avalonia.Views.Questions.UnsupportedQuestionView"
              x:DataType="qvm:UnsupportedQuestionViewModel">
 
-    <StackPanel Spacing="10">
-        <TextBlock Text="{Binding Text}" FontSize="18" TextWrapping="Wrap"/>
-        <TextBlock Text="Цей тип питання ще не підтримується в Runner (MVP)."
-                   Opacity="0.7"/>
-        <TextBlock Text="{Binding Question.Type, StringFormat=Тип: {0}}" Opacity="0.7"/>
-    </StackPanel>
+    <Grid RowDefinitions="Auto,Auto,*">
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Text}"
+                   FontSize="18"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,12"/>
+
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Question.Type, StringFormat=Тип: {0}}"
+                   Opacity="0.7"
+                   Margin="0,0,0,10"/>
+
+        <Border Grid.Row="2" Padding="6" MinHeight="150">
+            <TextBlock Text="Цей тип питання ще не підтримується (MVP)."
+                       Opacity="0.7"
+                       TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
 </UserControl>

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Quizzamination.Models;
@@ -9,12 +8,16 @@ public partial class SingleChoiceQuestionViewModel : ObservableObject, IQuestion
 {
     public Question Question { get; }
     public string Text => Question.Text;
-    public IReadOnlyList<string> Options =>
-        (IReadOnlyList<string>?)Question.Options ?? Array.Empty<string>();
+
+    public IReadOnlyList<string> Options { get; }
 
     [ObservableProperty] private int selectedIndex = -1;
 
     public object? UserAnswer => SelectedIndex;
 
-    public SingleChoiceQuestionViewModel(Question q) => Question = q;
+    public SingleChoiceQuestionViewModel(Question q)
+    {
+        Question = q;
+        Options = q.Options ?? new List<string>();
+    }
 }
