@@ -7,19 +7,14 @@ using Quizzamination.Models;
 
 namespace Quizzamination.Avalonia.ViewModels.Questions;
 
-public class MatchingPair : ObservableObject
+public partial class MatchingItemViewModel : ObservableObject
 {
     public string Left { get; }
     public IReadOnlyList<string> RightOptions { get; }
 
-    private string? _selectedRight;
-    public string? SelectedRight
-    {
-        get => _selectedRight;
-        set => SetProperty(ref _selectedRight, value);
-    }
+    [ObservableProperty] private string? selectedRight;
 
-    public MatchingPair(string left, IReadOnlyList<string> rightOptions)
+    public MatchingItemViewModel(string left, IReadOnlyList<string> rightOptions)
     {
         Left = left;
         RightOptions = rightOptions;
@@ -31,19 +26,35 @@ public partial class MatchingQuestionViewModel : ObservableObject, IQuestionSess
     public Question Question { get; }
     public string Text => Question.Text;
 
-    public ObservableCollection<MatchingPair> Pairs { get; }
+    public ObservableCollection<MatchingItemViewModel> Items { get; }
 
-    public object? UserAnswer => Pairs.ToDictionary(p => p.Left, p => p.SelectedRight ?? "");
+    public IReadOnlyList<string> RightOptions { get; }
+
+    public object? UserAnswer =>
+        Items.ToDictionary(i => i.Left, i => i.SelectedRight);
 
     public MatchingQuestionViewModel(Question q)
     {
         Question = q;
 
         var pairs = q.MatchPairs ?? new Dictionary<string, string>();
-        var rights = pairs.Values.Distinct().ToList();
 
-        Pairs = new ObservableCollection<MatchingPair>(
-            pairs.Keys.Select(k => new MatchingPair(k, rights))
+        var shuffled = pairs.Values.ToList();
+        Shuffle(shuffled);
+        var rights = shuffled.AsReadOnly();
+
+        Items = new ObservableCollection<MatchingItemViewModel>(
+            pairs.Keys.Select(k => new MatchingItemViewModel(k, rights))
         );
+    }
+
+    private static void Shuffle<T>(IList<T> list)
+    {
+        var rng = new Random();
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = rng.Next(i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
     }
 }

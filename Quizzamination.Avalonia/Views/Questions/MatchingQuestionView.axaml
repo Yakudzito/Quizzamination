@@ -12,18 +12,24 @@
                    Margin="0,0,0,12"/>
 
         <Border Grid.Row="1" Padding="6" MinHeight="250">
-            <ItemsControl ItemsSource="{Binding Pairs}">
+            <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="qvm:MatchingPair">
+                    <DataTemplate x:DataType="qvm:MatchingItemViewModel">
                         <Grid ColumnDefinitions="*,*" Margin="0,0,0,8">
-                            <TextBlock Grid.Column="0" Text="{Binding Left}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding Left}"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,12,0"/>
+
                             <ComboBox Grid.Column="1"
                                       ItemsSource="{Binding RightOptions}"
-                                      SelectedItem="{Binding SelectedRight}"/>
+                                      SelectedItem="{Binding SelectedRight}"
+                                      MinWidth="220"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Border>
     </Grid>
+
 </UserControl>
