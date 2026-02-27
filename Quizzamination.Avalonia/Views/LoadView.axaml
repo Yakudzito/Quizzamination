@@ -5,8 +5,10 @@
              x:Class="Quizzamination.Avalonia.Views.LoadView"
              x:DataType="vm:LoadViewModel">
 
-    <DockPanel Margin="16" LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" Spacing="10">
+    <Grid Margin="16" RowDefinitions="Auto,*,Auto">
+
+        <!-- Верхній блок -->
+        <StackPanel Grid.Row="0" Spacing="10">
             <TextBlock Text="{Binding Status}" TextWrapping="Wrap"/>
 
             <StackPanel Orientation="Horizontal" Spacing="8">
@@ -23,7 +25,10 @@
             <Separator/>
         </StackPanel>
 
-        <ListBox ItemsSource="{Binding Questions}">
+        <!-- Список питань -->
+        <ListBox Grid.Row="1"
+                 Margin="0,8,0,8"
+                 ItemsSource="{Binding Questions}">
             <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="m:Question">
                     <StackPanel Spacing="4">
@@ -33,5 +38,12 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </DockPanel>
+
+        <!-- Низ: прапорець -->
+        <CheckBox Grid.Row="2"
+                  Content="Перемішати питання перед стартом"
+                  IsChecked="{Binding ShuffleQuestions}"
+                  Margin="0,4,0,0"/>
+
+    </Grid>
 </UserControl>

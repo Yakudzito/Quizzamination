@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using Quizzamination.Models;
 using Quizzamination.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Quizzamination.Avalonia.ViewModels;
 
@@ -14,11 +15,12 @@ public partial class LoadViewModel : ObservableObject
 {
     [ObservableProperty] private string status = "Обери файл тесту (.json/.txt), завантаж і натисни Почати.";
     [ObservableProperty] private string? selectedFilePath;
-
+    [ObservableProperty] private bool shuffleQuestions = true;
+    
     public ObservableCollection<Question> Questions { get; } = new();
 
     public event Action<IReadOnlyList<Question>>? OnStart;
-
+    
     [RelayCommand]
     private async Task LoadTestAsync()
     {
@@ -58,7 +60,22 @@ public partial class LoadViewModel : ObservableObject
             Status = "Немає питань. Спочатку завантаж тест.";
             return;
         }
+        
+        var list = Questions.ToList();
 
-        OnStart?.Invoke(Questions);
+        if (ShuffleQuestions)
+            Shuffle(list);
+
+        OnStart?.Invoke(list);
+    }
+
+    private static void Shuffle<T>(IList<T> list)
+    {
+        var rng = Random.Shared;
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = rng.Next(i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
     }
 }
