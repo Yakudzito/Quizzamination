@@ -39,11 +39,13 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <!-- Низ: прапорець -->
-        <CheckBox Grid.Row="2"
-                  Content="Перемішати питання перед стартом"
-                  IsChecked="{Binding ShuffleQuestions}"
-                  Margin="0,4,0,0"/>
+        <!-- Низ: налаштування старту -->
+        <StackPanel Grid.Row="2" Spacing="6" Margin="0,4,0,0">
+            <CheckBox Content="Перемішати питання перед стартом"
+                      IsChecked="{Binding ShuffleQuestions}"/>
+            <CheckBox Content="Режим навчання (показ підказки)"
+                      IsChecked="{Binding LearningModeEnabled}"/>
+        </StackPanel>
 
     </Grid>
 </UserControl>

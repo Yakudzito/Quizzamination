@@ -19,9 +19,9 @@ public partial class AppViewModel : ObservableObject
         Current = Load;
     }
 
-    private void StartTest(IReadOnlyList<Question> questions)
+    private void StartTest(IReadOnlyList<Question> questions, TestStartOptions options)
     {
-        Runner = new RunnerViewModel(questions);
+        Runner = new RunnerViewModel(questions, options);
         Runner.OnFinished += ShowResults;
         Current = Runner;
     }

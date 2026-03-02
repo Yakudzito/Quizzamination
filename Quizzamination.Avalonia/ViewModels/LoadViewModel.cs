@@ -16,10 +16,11 @@ public partial class LoadViewModel : ObservableObject
     [ObservableProperty] private string status = "Обери файл тесту (.json/.txt), завантаж і натисни Почати.";
     [ObservableProperty] private string? selectedFilePath;
     [ObservableProperty] private bool shuffleQuestions = true;
+    [ObservableProperty] private bool learningModeEnabled;
     
     public ObservableCollection<Question> Questions { get; } = new();
 
-    public event Action<IReadOnlyList<Question>>? OnStart;
+    public event Action<IReadOnlyList<Question>, TestStartOptions>? OnStart;
     
     [RelayCommand]
     private async Task LoadTestAsync()
@@ -66,7 +67,12 @@ public partial class LoadViewModel : ObservableObject
         if (ShuffleQuestions)
             Shuffle(list);
 
-        OnStart?.Invoke(list);
+        var options = new TestStartOptions
+        {
+            LearningModeEnabled = LearningModeEnabled
+        };
+
+        OnStart?.Invoke(list, options);
     }
 
     private static void Shuffle<T>(IList<T> list)
